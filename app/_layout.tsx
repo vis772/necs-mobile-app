@@ -31,7 +31,6 @@ export default function RootLayout() {
   useEffect(() => {
     const prepare = async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 100));
         setAppReady(true);
         await SplashScreen.hideAsync();
       } catch (e) {
