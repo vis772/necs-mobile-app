@@ -8,19 +8,18 @@ import {
   Dimensions,
   ScrollView,
   StatusBar,
-  Platform,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { X, Trophy, TrendingUp, Radio } from 'lucide-react-native';
+import { X, Trophy, TrendingUp, Radio, Play } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import { useApp } from '@/contexts/AppContext';
 import { getLiveMatches } from '@/mocks/matches';
 import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { getTeamsByGame } from '@/mocks/teams';
 import { getPlayersByGame } from '@/mocks/players';
-import { Video, ResizeMode } from 'expo-av';
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const STORY_DURATION = 5000;
@@ -75,32 +74,43 @@ export default function StoriesScreen() {
   }, [progress, handleNext]);
 
   useEffect(() => {
-    const slides: StorySlide[] = [];
+    try {
+      const slides: StorySlide[] = [];
 
-    if (storyType === 'live') {
-      const liveMatches = getLiveMatches(selectedGame);
-      liveMatches.forEach(match => {
-        slides.push({ id: `live-${match.id}`, type: 'live', data: match });
-      });
-    } else if (storyType === 'highlights') {
-      slides.push({ id: 'highlights-1', type: 'highlights' });
-    } else if (storyType === 'standings') {
-      slides.push({ id: 'standings-1', type: 'standings' });
-    } else if (storyType === 'stats') {
-      const statTypes = ['kills', 'acs', 'assists'];
-      statTypes.forEach(stat => {
-        slides.push({ id: `stats-${stat}`, type: 'stats', data: { statType: stat } });
-      });
-    } else if (storyType === 'teams') {
-      const teams = getTeamsByGame(selectedGame);
-      teams.forEach(team => {
-        slides.push({ id: `team-${team.id}`, type: 'teams', data: team });
-      });
+      if (storyType === 'live') {
+        const liveMatches = getLiveMatches(selectedGame);
+        if (liveMatches && liveMatches.length > 0) {
+          liveMatches.forEach(match => {
+            slides.push({ id: `live-${match.id}`, type: 'live', data: match });
+          });
+        } else {
+          slides.push({ id: 'no-live', type: 'live', data: null });
+        }
+      } else if (storyType === 'highlights') {
+        slides.push({ id: 'highlights-1', type: 'highlights' });
+      } else if (storyType === 'standings') {
+        slides.push({ id: 'standings-1', type: 'standings' });
+      } else if (storyType === 'stats') {
+        const statTypes = ['kills', 'acs', 'assists'];
+        statTypes.forEach(stat => {
+          slides.push({ id: `stats-${stat}`, type: 'stats', data: { statType: stat } });
+        });
+      } else if (storyType === 'teams') {
+        const teams = getTeamsByGame(selectedGame);
+        if (teams && teams.length > 0) {
+          teams.forEach(team => {
+            slides.push({ id: `team-${team.id}`, type: 'teams', data: team });
+          });
+        }
+      }
+
+      setStories(slides);
+      setCurrentIndex(0);
+    } catch (error) {
+      console.error('[StoriesScreen] Error loading stories:', error);
+      router.back();
     }
-
-    setStories(slides);
-    setCurrentIndex(0);
-  }, [storyType, selectedGame]);
+  }, [storyType, selectedGame, router]);
 
   useEffect(() => {
     if (stories.length > 0) {
@@ -131,7 +141,20 @@ export default function StoriesScreen() {
   };
 
   if (stories.length === 0) {
-    return null;
+    return (
+      <View style={styles.container}>
+        <LinearGradient colors={['#0F0F0F', '#1A1A1A']} style={styles.storyContent}>
+          <SafeAreaView edges={['top']} style={styles.overlay}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <X size={28} color={Colors.white} strokeWidth={2.5} />
+            </TouchableOpacity>
+          </SafeAreaView>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: Colors.white, fontSize: 16 }}>No stories available</Text>
+          </View>
+        </LinearGradient>
+      </View>
+    );
   }
 
   const currentStory = stories[currentIndex];
@@ -185,6 +208,17 @@ export default function StoriesScreen() {
 
 function LiveStory({ data }: { data: any }) {
   const { selectedGame } = useApp();
+  
+  if (!data) {
+    return (
+      <LinearGradient colors={['#0F0F0F', '#1A1A1A']} style={styles.storyContent}>
+        <View style={styles.liveHeader}>
+          <Text style={styles.liveText}>No live games at the moment</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
+  
   const homeTeam = getTeamWithDynamicRecord(data.homeTeamId);
   const awayTeam = getTeamWithDynamicRecord(data.awayTeamId);
   const players = getPlayersByGame(selectedGame);
@@ -192,7 +226,15 @@ function LiveStory({ data }: { data: any }) {
   const homeTeamPlayers = players.filter(p => p.teamId === data.homeTeamId).slice(0, 5);
   const awayTeamPlayers = players.filter(p => p.teamId === data.awayTeamId).slice(0, 5);
 
-  if (!homeTeam || !awayTeam) return null;
+  if (!homeTeam || !awayTeam) {
+    return (
+      <LinearGradient colors={['#0F0F0F', '#1A1A1A']} style={styles.storyContent}>
+        <View style={styles.liveHeader}>
+          <Text style={styles.liveText}>Loading...</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
 
   return (
     <LinearGradient colors={['#0F0F0F', '#1A1A1A']} style={styles.storyContent}>
@@ -263,27 +305,13 @@ function LiveStory({ data }: { data: any }) {
 
 function HighlightsStory() {
   return (
-    <View style={styles.storyContent}>
-      {Platform.OS !== 'web' && (
-        <Video
-          source={{ uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
-          style={styles.highlightVideo}
-          resizeMode={ResizeMode.COVER}
-          shouldPlay
-          isLooping
-          isMuted
-        />
-      )}
-      <LinearGradient
-        colors={['rgba(0,0,0,0.6)', 'transparent', 'rgba(0,0,0,0.8)']}
-        style={styles.videoOverlay}
-      >
-        <View style={styles.highlightFooter}>
-          <Text style={styles.highlightTitle}>VALORANT HIGHLIGHTS</Text>
-          <Text style={styles.highlightSubtitle}>Epic plays from the tournament</Text>
-        </View>
-      </LinearGradient>
-    </View>
+    <LinearGradient colors={['#1A0A2E', '#0F051F']} style={styles.storyContent}>
+      <View style={styles.highlightFooter}>
+        <Play size={48} color={Colors.accent} />
+        <Text style={styles.highlightTitle}>VALORANT HIGHLIGHTS</Text>
+        <Text style={styles.highlightSubtitle}>Epic plays from the tournament</Text>
+      </View>
+    </LinearGradient>
   );
 }
 
