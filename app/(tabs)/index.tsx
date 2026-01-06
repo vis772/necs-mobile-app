@@ -13,25 +13,16 @@ import Colors from '@/constants/colors';
 import { getMatchesByGame, getLiveMatches } from '@/mocks/matches';
 import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { GAMES } from '@/constants/games';
-import { Play, Users, Trophy, TrendingUp, Radio } from 'lucide-react-native';
+import { Play } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 const formatScore = (score: number): string => {
   return score > 9 ? '9' : score.toString();
 };
 
-type StoryItem = {
-  id: string;
-  title: string;
-  type: 'live' | 'highlights' | 'standings' | 'stats' | 'teams';
-  icon: React.ReactNode;
-  isLive?: boolean;
-};
-
 export default function HomeScreen() {
   console.log('[HomeScreen] Rendering...');
   
-  const router = useRouter();
   const { selectedGame, setSelectedGame } = useApp();
   console.log('[HomeScreen] selectedGame:', selectedGame);
   
@@ -40,40 +31,6 @@ export default function HomeScreen() {
   
   const upcomingMatches = getMatchesByGame(selectedGame).filter(m => m.status === 'upcoming').slice(0, 5);
   console.log('[HomeScreen] upcomingMatches count:', upcomingMatches.length);
-
-  const storyItems: StoryItem[] = [
-    { 
-      id: 'live', 
-      title: 'LIVE', 
-      type: 'live', 
-      icon: <Radio size={20} color={Colors.white} />,
-      isLive: true 
-    },
-    { 
-      id: 'highlights', 
-      title: 'Highlights', 
-      type: 'highlights', 
-      icon: <Play size={20} color={Colors.white} />
-    },
-    { 
-      id: 'standings', 
-      title: 'Standings', 
-      type: 'standings', 
-      icon: <Trophy size={20} color={Colors.white} />
-    },
-    { 
-      id: 'stats', 
-      title: 'Stats', 
-      type: 'stats', 
-      icon: <TrendingUp size={20} color={Colors.white} />
-    },
-    { 
-      id: 'teams', 
-      title: 'Teams', 
-      type: 'teams', 
-      icon: <Users size={20} color={Colors.white} />
-    },
-  ];
 
   return (
     <View style={styles.container}>
@@ -115,36 +72,6 @@ export default function HomeScreen() {
         </View>
 
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <View style={styles.storiesSection}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.storiesContainer}
-            >
-              {storyItems.map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.storyItem}
-                  onPress={() => {
-                    console.log('[HomeScreen] Opening story:', item.id);
-                    router.push({ pathname: '/stories' as any, params: { type: item.type } });
-                  }}
-                >
-                  <View style={[
-                    styles.storyCircle,
-                    item.isLive && styles.storyCircleLive
-                  ]}>
-                    <View style={styles.storyInner}>
-                      {item.icon}
-                    </View>
-                  </View>
-                  <Text style={styles.storyTitle}>{item.title}</Text>
-                  {item.isLive && <View style={styles.storyLiveDot} />}
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-
           {liveMatches.length > 0 && (
             <View style={styles.liveSection}>
               {liveMatches.map((match) => (
@@ -360,61 +287,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  storiesSection: {
-    paddingTop: 16,
-  },
-  storiesContainer: {
-    paddingHorizontal: 16,
-    gap: 12,
-  },
-  storyItem: {
-    alignItems: 'center',
-    gap: 8,
-  },
-  storyCircle: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.15)',
-    padding: 3,
-  },
-  storyCircleActive: {
-    borderColor: Colors.accent,
-    borderWidth: 3,
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  storyCircleLive: {
-    borderColor: Colors.error,
-  },
-  storyInner: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 30,
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  storyTitle: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: Colors.white,
-  },
-  storyLiveDot: {
-    position: 'absolute' as const,
-    top: 2,
-    right: 2,
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: Colors.error,
-    borderWidth: 2,
-    borderColor: Colors.primary,
   },
   liveSection: {
     paddingTop: 20,
