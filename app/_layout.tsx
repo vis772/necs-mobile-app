@@ -1,11 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "@/contexts/AppContext";
-import { View, ActivityIndicator } from "react-native";
-import Colors from "@/constants/colors";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,28 +24,9 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
-  const [appReady, setAppReady] = useState(false);
-
   useEffect(() => {
-    const prepare = async () => {
-      try {
-        setAppReady(true);
-        await SplashScreen.hideAsync();
-      } catch (e) {
-        console.warn('Splash screen error:', e);
-        setAppReady(true);
-      }
-    };
-    prepare();
+    SplashScreen.hideAsync().catch(() => {});
   }, []);
-
-  if (!appReady) {
-    return (
-      <View style={{ flex: 1, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" color={Colors.accent} />
-      </View>
-    );
-  }
 
   return (
     <QueryClientProvider client={queryClient}>
