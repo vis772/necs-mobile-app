@@ -20,6 +20,7 @@ function RootLayoutNav() {
       <Stack.Screen name="live-video" options={{ headerShown: false, presentation: 'modal' }} />
       <Stack.Screen name="replay-video" options={{ headerShown: false, presentation: 'modal' }} />
       <Stack.Screen name="leaderboard" options={{ headerShown: false }} />
+      <Stack.Screen name="stories" options={{ headerShown: false, presentation: 'fullScreenModal', animation: 'fade' }} />
     </Stack>
   );
 }

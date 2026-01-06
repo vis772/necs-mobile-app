@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -31,10 +31,9 @@ type StoryItem = {
 export default function HomeScreen() {
   console.log('[HomeScreen] Rendering...');
   
+  const router = useRouter();
   const { selectedGame, setSelectedGame } = useApp();
   console.log('[HomeScreen] selectedGame:', selectedGame);
-  
-  const [selectedStory, setSelectedStory] = useState<string>('live');
   
   const liveMatches = getLiveMatches(selectedGame);
   console.log('[HomeScreen] liveMatches count:', liveMatches.length);
@@ -126,11 +125,13 @@ export default function HomeScreen() {
                 <TouchableOpacity
                   key={item.id}
                   style={styles.storyItem}
-                  onPress={() => setSelectedStory(item.id)}
+                  onPress={() => {
+                    console.log('[HomeScreen] Opening story:', item.id);
+                    router.push({ pathname: '/stories' as any, params: { type: item.type } });
+                  }}
                 >
                   <View style={[
                     styles.storyCircle,
-                    selectedStory === item.id && styles.storyCircleActive,
                     item.isLive && styles.storyCircleLive
                   ]}>
                     <View style={styles.storyInner}>
