@@ -23,7 +23,7 @@ const formatScore = (score: number): string => {
 type StoryItem = {
   id: string;
   title: string;
-  type: 'live' | 'highlights' | 'standings' | 'stats';
+  type: 'live' | 'highlights' | 'standings' | 'stats' | 'teams';
   icon: React.ReactNode;
   isLive?: boolean;
 };
@@ -70,7 +70,7 @@ export default function HomeScreen() {
     { 
       id: 'teams', 
       title: 'Teams', 
-      type: 'stats', 
+      type: 'teams', 
       icon: <Users size={20} color={Colors.white} />
     },
   ];
