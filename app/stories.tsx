@@ -46,12 +46,15 @@ export default function StoriesScreen() {
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleNext = React.useCallback(() => {
-    if (currentIndex < stories.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      router.back();
-    }
-  }, [currentIndex, stories.length, router]);
+    setCurrentIndex(prev => {
+      if (prev < stories.length - 1) {
+        return prev + 1;
+      } else {
+        router.back();
+        return prev;
+      }
+    });
+  }, [stories.length, router]);
 
   const startProgress = React.useCallback(() => {
     if (progressTimerRef.current) {
@@ -97,15 +100,19 @@ export default function StoriesScreen() {
 
     setStories(slides);
     setCurrentIndex(0);
-    startProgress();
-  }, [storyType, selectedGame, startProgress]);
+  }, [storyType, selectedGame]);
 
-  const handlePrevious = React.useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+  useEffect(() => {
+    if (stories.length > 0) {
       startProgress();
     }
-  }, [currentIndex, startProgress]);
+  }, [currentIndex, stories.length, startProgress]);
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
 
   const handleClose = () => {
     if (progressTimerRef.current) {
