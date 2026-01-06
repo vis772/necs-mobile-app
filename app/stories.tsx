@@ -74,48 +74,52 @@ export default function StoriesScreen() {
   }, [progress, handleNext]);
 
   useEffect(() => {
-    try {
-      const slides: StorySlide[] = [];
+    const loadStories = () => {
+      try {
+        const slides: StorySlide[] = [];
 
-      if (storyType === 'live') {
-        const liveMatches = getLiveMatches(selectedGame);
-        if (liveMatches && liveMatches.length > 0) {
-          liveMatches.forEach(match => {
-            slides.push({ id: `live-${match.id}`, type: 'live', data: match });
+        if (storyType === 'live') {
+          const liveMatches = getLiveMatches(selectedGame);
+          if (liveMatches && liveMatches.length > 0) {
+            liveMatches.forEach(match => {
+              slides.push({ id: `live-${match.id}`, type: 'live', data: match });
+            });
+          } else {
+            slides.push({ id: 'no-live', type: 'live', data: null });
+          }
+        } else if (storyType === 'highlights') {
+          slides.push({ id: 'highlights-1', type: 'highlights' });
+        } else if (storyType === 'standings') {
+          slides.push({ id: 'standings-1', type: 'standings' });
+        } else if (storyType === 'stats') {
+          const statTypes = ['kills', 'acs', 'assists'];
+          statTypes.forEach(stat => {
+            slides.push({ id: `stats-${stat}`, type: 'stats', data: { statType: stat } });
           });
-        } else {
-          slides.push({ id: 'no-live', type: 'live', data: null });
+        } else if (storyType === 'teams') {
+          const teams = getTeamsByGame(selectedGame);
+          if (teams && teams.length > 0) {
+            teams.forEach(team => {
+              slides.push({ id: `team-${team.id}`, type: 'teams', data: team });
+            });
+          } else {
+            slides.push({ id: 'no-teams', type: 'teams', data: null });
+          }
         }
-      } else if (storyType === 'highlights') {
-        slides.push({ id: 'highlights-1', type: 'highlights' });
-      } else if (storyType === 'standings') {
-        slides.push({ id: 'standings-1', type: 'standings' });
-      } else if (storyType === 'stats') {
-        const statTypes = ['kills', 'acs', 'assists'];
-        statTypes.forEach(stat => {
-          slides.push({ id: `stats-${stat}`, type: 'stats', data: { statType: stat } });
-        });
-      } else if (storyType === 'teams') {
-        const teams = getTeamsByGame(selectedGame);
-        if (teams && teams.length > 0) {
-          teams.forEach(team => {
-            slides.push({ id: `team-${team.id}`, type: 'teams', data: team });
-          });
-        } else {
-          slides.push({ id: 'no-teams', type: 'teams', data: null });
+
+        if (slides.length === 0) {
+          slides.push({ id: 'empty', type: storyType, data: null });
         }
-      }
 
-      if (slides.length === 0) {
-        slides.push({ id: 'empty', type: storyType, data: null });
+        setStories(slides);
+        setCurrentIndex(0);
+      } catch (error) {
+        console.error('[StoriesScreen] Error loading stories:', error);
+        setStories([{ id: 'error', type: 'live', data: null }]);
       }
+    };
 
-      setStories(slides);
-      setCurrentIndex(0);
-    } catch (error) {
-      console.error('[StoriesScreen] Error loading stories:', error);
-      setStories([{ id: 'error', type: 'live', data: null }]);
-    }
+    loadStories();
   }, [storyType, selectedGame]);
 
   useEffect(() => {
