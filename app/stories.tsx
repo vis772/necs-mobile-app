@@ -101,16 +101,22 @@ export default function StoriesScreen() {
           teams.forEach(team => {
             slides.push({ id: `team-${team.id}`, type: 'teams', data: team });
           });
+        } else {
+          slides.push({ id: 'no-teams', type: 'teams', data: null });
         }
+      }
+
+      if (slides.length === 0) {
+        slides.push({ id: 'empty', type: storyType, data: null });
       }
 
       setStories(slides);
       setCurrentIndex(0);
     } catch (error) {
       console.error('[StoriesScreen] Error loading stories:', error);
-      router.back();
+      setStories([{ id: 'error', type: 'live', data: null }]);
     }
-  }, [storyType, selectedGame, router]);
+  }, [storyType, selectedGame]);
 
   useEffect(() => {
     if (stories.length > 0) {
@@ -221,7 +227,7 @@ function LiveStory({ data }: { data: any }) {
   
   const homeTeam = getTeamWithDynamicRecord(data.homeTeamId);
   const awayTeam = getTeamWithDynamicRecord(data.awayTeamId);
-  const players = getPlayersByGame(selectedGame);
+  const players = getPlayersByGame(selectedGame) || [];
   
   const homeTeamPlayers = players.filter(p => p.teamId === data.homeTeamId).slice(0, 5);
   const awayTeamPlayers = players.filter(p => p.teamId === data.awayTeamId).slice(0, 5);
@@ -317,7 +323,8 @@ function HighlightsStory() {
 
 function StandingsStory() {
   const { selectedGame } = useApp();
-  const teams = getTeamsByGame(selectedGame)
+  const allTeams = getTeamsByGame(selectedGame) || [];
+  const teams = allTeams
     .map(team => getTeamWithDynamicRecord(team.id))
     .filter(Boolean)
     .sort((a: any, b: any) => b.record.wins - a.record.wins);
@@ -350,7 +357,7 @@ function StandingsStory() {
 
 function StatsStory({ data }: { data: { statType: string } }) {
   const { selectedGame } = useApp();
-  const players = getPlayersByGame(selectedGame);
+  const players = getPlayersByGame(selectedGame) || [];
 
   const statConfig = {
     kills: { label: 'KILLS LEADERS', key: 'kills' as const },
@@ -376,7 +383,7 @@ function StatsStory({ data }: { data: { statType: string } }) {
 
       <ScrollView style={styles.statsList} showsVerticalScrollIndicator={false}>
         {sortedPlayers.map((player, index) => {
-          const teams = getTeamsByGame(selectedGame);
+          const teams = getTeamsByGame(selectedGame) || [];
           const team = teams.find(t => t.id === player.teamId);
           
           return (
@@ -399,10 +406,30 @@ function StatsStory({ data }: { data: { statType: string } }) {
 
 function TeamsStory({ data }: { data: any }) {
   const { selectedGame } = useApp();
+  
+  if (!data) {
+    return (
+      <LinearGradient colors={['#0F0F0F', '#1A1A1A']} style={styles.storyContent}>
+        <View style={styles.liveHeader}>
+          <Text style={styles.liveText}>No teams available</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
+  
   const team = getTeamWithDynamicRecord(data.id);
-  const players = getPlayersByGame(selectedGame).filter(p => p.teamId === data.id);
+  const allPlayers = getPlayersByGame(selectedGame) || [];
+  const players = allPlayers.filter(p => p.teamId === data.id);
 
-  if (!team) return null;
+  if (!team) {
+    return (
+      <LinearGradient colors={['#0F0F0F', '#1A1A1A']} style={styles.storyContent}>
+        <View style={styles.liveHeader}>
+          <Text style={styles.liveText}>Team not found</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
 
   return (
     <LinearGradient
