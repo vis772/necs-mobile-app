@@ -7,8 +7,8 @@ import {
   Animated,
   Dimensions,
   ScrollView,
-  Modal,
   StatusBar,
+  Platform,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -137,51 +137,49 @@ export default function StoriesScreen() {
   const currentStory = stories[currentIndex];
 
   return (
-    <Modal visible={true} animationType="fade" onRequestClose={handleClose}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <View style={styles.container}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={styles.tapArea}
-          onPress={(e) => handleTap(e.nativeEvent.locationX)}
-        >
-          {currentStory.type === 'live' && <LiveStory data={currentStory.data} />}
-          {currentStory.type === 'highlights' && <HighlightsStory />}
-          {currentStory.type === 'standings' && <StandingsStory />}
-          {currentStory.type === 'stats' && <StatsStory data={currentStory.data} />}
-          {currentStory.type === 'teams' && <TeamsStory data={currentStory.data} />}
+      <TouchableOpacity
+        activeOpacity={1}
+        style={styles.tapArea}
+        onPress={(e) => handleTap(e.nativeEvent.locationX)}
+      >
+        {currentStory.type === 'live' && <LiveStory data={currentStory.data} />}
+        {currentStory.type === 'highlights' && <HighlightsStory />}
+        {currentStory.type === 'standings' && <StandingsStory />}
+        {currentStory.type === 'stats' && <StatsStory data={currentStory.data} />}
+        {currentStory.type === 'teams' && <TeamsStory data={currentStory.data} />}
+      </TouchableOpacity>
+
+      <SafeAreaView edges={['top']} style={styles.overlay}>
+        <View style={styles.progressContainer}>
+          {stories.map((_, index) => (
+            <View key={index} style={styles.progressBarBg}>
+              <Animated.View
+                style={[
+                  styles.progressBarFill,
+                  {
+                    width:
+                      index < currentIndex
+                        ? '100%'
+                        : index === currentIndex
+                        ? progress.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: ['0%', '100%'],
+                          })
+                        : '0%',
+                  },
+                ]}
+              />
+            </View>
+          ))}
+        </View>
+
+        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+          <X size={28} color={Colors.white} strokeWidth={2.5} />
         </TouchableOpacity>
-
-        <SafeAreaView edges={['top']} style={styles.overlay}>
-          <View style={styles.progressContainer}>
-            {stories.map((_, index) => (
-              <View key={index} style={styles.progressBarBg}>
-                <Animated.View
-                  style={[
-                    styles.progressBarFill,
-                    {
-                      width:
-                        index < currentIndex
-                          ? '100%'
-                          : index === currentIndex
-                          ? progress.interpolate({
-                              inputRange: [0, 1],
-                              outputRange: ['0%', '100%'],
-                            })
-                          : '0%',
-                    },
-                  ]}
-                />
-              </View>
-            ))}
-          </View>
-
-          <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-            <X size={28} color={Colors.white} strokeWidth={2.5} />
-          </TouchableOpacity>
-        </SafeAreaView>
-      </View>
-    </Modal>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -266,14 +264,16 @@ function LiveStory({ data }: { data: any }) {
 function HighlightsStory() {
   return (
     <View style={styles.storyContent}>
-      <Video
-        source={{ uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
-        style={styles.highlightVideo}
-        resizeMode={ResizeMode.COVER}
-        shouldPlay
-        isLooping
-        isMuted
-      />
+      {Platform.OS !== 'web' && (
+        <Video
+          source={{ uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
+          style={styles.highlightVideo}
+          resizeMode={ResizeMode.COVER}
+          shouldPlay
+          isLooping
+          isMuted
+        />
+      )}
       <LinearGradient
         colors={['rgba(0,0,0,0.6)', 'transparent', 'rgba(0,0,0,0.8)']}
         style={styles.videoOverlay}
