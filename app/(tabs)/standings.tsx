@@ -259,6 +259,12 @@ function MatchCard({ match }: { match: Match }) {
     }
   };
 
+  const handleWatchPress = () => {
+    if (match.status === 'live' && match.streamUrl) {
+      router.push({ pathname: '/live-video' as any, params: { matchId: match.id } });
+    }
+  };
+
   return (
     <TouchableOpacity 
       style={styles.matchCard} 
@@ -298,9 +304,13 @@ function MatchCard({ match }: { match: Match }) {
           )}
           
           {match.streamUrl && match.status === 'live' && (
-            <View style={styles.streamBadge}>
+            <TouchableOpacity 
+              style={styles.streamBadge}
+              onPress={handleWatchPress}
+              activeOpacity={0.7}
+            >
               <Text style={styles.streamText}>WATCH</Text>
-            </View>
+            </TouchableOpacity>
           )}
         </View>
 
