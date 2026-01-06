@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Video } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Image } from 'expo-image';
+
 import { 
   X, 
   Play, 
@@ -247,7 +247,9 @@ export default function LiveVideoScreen() {
 
               <View style={styles.matchScore}>
                 <View style={styles.teamInfoCompact}>
-                  <Image source={{ uri: homeTeam.image }} style={styles.teamLogoSmall} />
+                  <View style={[styles.teamLogoSmall, { backgroundColor: homeTeam.color }]}>
+                    <Text style={styles.teamLogoText}>{homeTeam.shortName}</Text>
+                  </View>
                   <Text style={styles.teamNameSmall} numberOfLines={1}>{homeTeam.name}</Text>
                 </View>
 
@@ -258,7 +260,9 @@ export default function LiveVideoScreen() {
                 </View>
 
                 <View style={styles.teamInfoCompact}>
-                  <Image source={{ uri: awayTeam.image }} style={styles.teamLogoSmall} />
+                  <View style={[styles.teamLogoSmall, { backgroundColor: awayTeam.color }]}>
+                    <Text style={styles.teamLogoText}>{awayTeam.shortName}</Text>
+                  </View>
                   <Text style={styles.teamNameSmall} numberOfLines={1}>{awayTeam.name}</Text>
                 </View>
               </View>
@@ -277,7 +281,9 @@ export default function LiveVideoScreen() {
                   ]}
                   onPress={() => setSelectedTeam('home')}
                 >
-                  <Image source={{ uri: homeTeam.image }} style={styles.toggleTeamLogo} />
+                  <View style={[styles.toggleTeamLogo, { backgroundColor: homeTeam.color }]}>
+                    <Text style={styles.toggleTeamLogoText}>{homeTeam.shortName}</Text>
+                  </View>
                   <Text
                     style={[
                       styles.toggleText,
@@ -296,7 +302,9 @@ export default function LiveVideoScreen() {
                   ]}
                   onPress={() => setSelectedTeam('away')}
                 >
-                  <Image source={{ uri: awayTeam.image }} style={styles.toggleTeamLogo} />
+                  <View style={[styles.toggleTeamLogo, { backgroundColor: awayTeam.color }]}>
+                    <Text style={styles.toggleTeamLogoText}>{awayTeam.shortName}</Text>
+                  </View>
                   <Text
                     style={[
                       styles.toggleText,
@@ -313,10 +321,9 @@ export default function LiveVideoScreen() {
                 {playerStats.map((stat, index) => (
                   <View key={stat.playerId} style={styles.playerCard}>
                     <View style={styles.playerInfo}>
-                      <Image
-                        source={{ uri: stat.image }}
-                        style={styles.playerImage}
-                      />
+                      <View style={styles.playerImage}>
+                        <Text style={styles.playerImageText}>{stat.username.charAt(0).toUpperCase()}</Text>
+                      </View>
                       <View style={styles.playerDetails}>
                         <Text style={styles.playerName}>{stat.name}</Text>
                         <Text style={styles.playerUsername}>@{stat.username}</Text>
@@ -506,6 +513,13 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: Colors.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamLogoText: {
+    fontSize: 10,
+    fontWeight: '800' as const,
+    color: Colors.white,
   },
   teamNameSmall: {
     fontSize: 11,
@@ -570,6 +584,13 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toggleTeamLogoText: {
+    fontSize: 8,
+    fontWeight: '800' as const,
+    color: Colors.white,
   },
   toggleText: {
     fontSize: 13,
@@ -604,6 +625,13 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: Colors.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerImageText: {
+    fontSize: 20,
+    fontWeight: '700' as const,
+    color: Colors.white,
   },
   playerDetails: {
     flex: 1,
