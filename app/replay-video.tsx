@@ -26,6 +26,10 @@ import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { getMatchesByGame } from '@/mocks/matches';
 import { getPlayersByTeamAndMatch, GamePlayerStats } from '@/mocks/matchPlayerStats';
 
+function getFirstLetter(name: string): string {
+  return name.trim()[0].toUpperCase();
+}
+
 const { width } = Dimensions.get('window');
 const VIDEO_HEIGHT = width * (9 / 16);
 
@@ -269,10 +273,9 @@ export default function ReplayVideoScreen() {
               </View>
               
               <View style={styles.potmCard}>
-                <Image
-                  source={{ uri: playerOfTheMatch.image }}
-                  style={styles.potmImage}
-                />
+                <View style={styles.potmImage}>
+                  <Text style={styles.potmImageText}>{getFirstLetter(playerOfTheMatch.name)}</Text>
+                </View>
                 <View style={styles.potmInfo}>
                   <Text style={styles.potmName}>{playerOfTheMatch.name}</Text>
                   <Text style={styles.potmUsername}>@{playerOfTheMatch.username}</Text>
@@ -367,10 +370,9 @@ export default function ReplayVideoScreen() {
                 {playerStats.map((stat, index) => (
                   <View key={stat.playerId} style={styles.playerCard}>
                     <View style={styles.playerInfo}>
-                      <Image
-                        source={{ uri: stat.image }}
-                        style={styles.playerImage}
-                      />
+                      <View style={styles.playerImage}>
+                        <Text style={styles.playerImageText}>{getFirstLetter(stat.name)}</Text>
+                      </View>
                       <View style={styles.playerDetails}>
                         <Text style={styles.playerName}>{stat.name}</Text>
                         <Text style={styles.playerUsername}>@{stat.username}</Text>
@@ -510,6 +512,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.tertiary,
     borderWidth: 3,
     borderColor: Colors.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  potmImageText: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: Colors.white,
   },
   potmInfo: {
     flex: 1,
@@ -696,6 +705,13 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: Colors.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerImageText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: Colors.white,
   },
   playerDetails: {
     flex: 1,

@@ -16,12 +16,8 @@ import { useApp } from '@/contexts/AppContext';
 import { getPlayersByGame, Player } from '@/mocks/players';
 import { getTeamById } from '@/mocks/teams';
 
-function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 1) {
-    return parts[0].substring(0, 2).toUpperCase();
-  }
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+function getFirstLetter(name: string): string {
+  return name.trim()[0].toUpperCase();
 }
 
 interface StatCardProps {
@@ -49,7 +45,7 @@ function StatCard({ title, player, stat, value, icon, statKey }: StatCardProps) 
       </View>
       <View style={styles.playerInfo}>
         <View style={styles.playerInitialsContainer}>
-          <Text style={styles.playerInitials}>{getInitials(player.name)}</Text>
+          <Text style={styles.playerInitials}>{getFirstLetter(player.name)}</Text>
         </View>
         <View style={styles.playerDetails}>
           <Text style={styles.playerName}>{player.username}</Text>
@@ -87,7 +83,7 @@ function MVPCard({ player, value, statKey }: { player: Player; value: number; st
       
       <View style={styles.mvpContent}>
         <View style={styles.mvpInitialsContainer}>
-          <Text style={styles.mvpInitials}>{getInitials(player.name)}</Text>
+          <Text style={styles.mvpInitials}>{getFirstLetter(player.name)}</Text>
         </View>
         
         <View style={styles.mvpPlayerInfo}>

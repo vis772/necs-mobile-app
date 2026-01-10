@@ -15,6 +15,10 @@ import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { MATCHES } from '@/mocks/matches';
 import { getPlayersByTeamAndMatch, GamePlayerStats } from '@/mocks/matchPlayerStats';
 
+function getFirstLetter(name: string): string {
+  return name.trim()[0].toUpperCase();
+}
+
 const formatScore = (score: number): string => {
   return score > 9 ? '9' : score.toString();
 };
@@ -169,7 +173,9 @@ function ValorantStatsTable({ players }: { players: GamePlayerStats[] }) {
       {players.map((player) => (
         <View key={player.playerId} style={styles.tableRow}>
           <View style={styles.playerCell}>
-            <Image source={{ uri: player.image }} style={styles.playerImage} />
+            <View style={styles.playerImage}>
+              <Text style={styles.playerImageText}>{getFirstLetter(player.name)}</Text>
+            </View>
             <View style={styles.playerInfo}>
               <Text style={styles.playerName} numberOfLines={1}>{player.name}</Text>
               <Text style={styles.playerUsername}>{player.username}</Text>
@@ -198,7 +204,9 @@ function SmashStatsTable({ players }: { players: GamePlayerStats[] }) {
       {players.map((player) => (
         <View key={player.playerId} style={styles.tableRow}>
           <View style={styles.playerCell}>
-            <Image source={{ uri: player.image }} style={styles.playerImage} />
+            <View style={styles.playerImage}>
+              <Text style={styles.playerImageText}>{getFirstLetter(player.name)}</Text>
+            </View>
             <View style={styles.playerInfo}>
               <Text style={styles.playerName} numberOfLines={1}>{player.name}</Text>
               <Text style={styles.playerUsername}>{player.username}</Text>
@@ -227,7 +235,9 @@ function RocketLeagueStatsTable({ players }: { players: GamePlayerStats[] }) {
       {players.map((player) => (
         <View key={player.playerId} style={styles.tableRow}>
           <View style={styles.playerCell}>
-            <Image source={{ uri: player.image }} style={styles.playerImage} />
+            <View style={styles.playerImage}>
+              <Text style={styles.playerImageText}>{getFirstLetter(player.name)}</Text>
+            </View>
             <View style={styles.playerInfo}>
               <Text style={styles.playerName} numberOfLines={1}>{player.name}</Text>
               <Text style={styles.playerUsername}>{player.username}</Text>
@@ -447,6 +457,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerImageText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.white,
   },
   playerInfo: {
     flex: 1,

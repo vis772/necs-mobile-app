@@ -16,6 +16,10 @@ import { MATCHES } from '@/mocks/matches';
 import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { PLAYERS } from '@/mocks/players';
 
+function getFirstLetter(name: string): string {
+  return name.trim()[0].toUpperCase();
+}
+
 export default function GamePreviewScreen() {
   console.log('[GamePreviewScreen] Rendering...');
   
@@ -156,7 +160,9 @@ export default function GamePreviewScreen() {
                   <View style={styles.playerNumber}>
                     <Text style={styles.playerNumberText}>{index + 1}</Text>
                   </View>
-                  <Image source={{ uri: player.image }} style={styles.playerImage} />
+                  <View style={styles.playerImage}>
+                    <Text style={styles.playerImageText}>{getFirstLetter(player.name)}</Text>
+                  </View>
                   <View style={styles.playerInfo}>
                     <Text style={styles.playerName}>{player.name}</Text>
                     <Text style={styles.playerUsername}>@{player.username}</Text>
@@ -432,6 +438,13 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerImageText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: Colors.white,
   },
   playerInfo: {
     flex: 1,

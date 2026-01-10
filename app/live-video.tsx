@@ -322,7 +322,7 @@ export default function LiveVideoScreen() {
                   <View key={stat.playerId} style={styles.playerCard}>
                     <View style={styles.playerInfo}>
                       <View style={styles.playerImage}>
-                        <Text style={styles.playerImageText}>{stat.username.charAt(0).toUpperCase()}</Text>
+                        <Text style={styles.playerImageText}>{stat.name.charAt(0).toUpperCase()}</Text>
                       </View>
                       <View style={styles.playerDetails}>
                         <Text style={styles.playerName}>{stat.name}</Text>
