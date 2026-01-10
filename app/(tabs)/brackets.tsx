@@ -6,7 +6,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
 import { Trophy } from 'lucide-react-native';
 import GameSelector from '@/components/GameSelector';
 import Colors from '@/constants/colors';
@@ -153,10 +152,16 @@ function BracketCard({ match, size = 'normal', champion = false }: { match: any;
         styles.bracketTeam,
         isHomeWinner && styles.bracketTeamWinner,
       ]}>
-        <Image source={{ uri: homeTeam.image }} style={[
+        <View style={[
           styles.bracketLogo,
-          isSmall && styles.bracketLogoSmall
-        ]} />
+          isSmall && styles.bracketLogoSmall,
+          { backgroundColor: homeTeam.color }
+        ]}>
+          <Text style={[
+            styles.bracketLogoText,
+            isSmall && styles.bracketLogoTextSmall
+          ]}>{homeTeam.shortName}</Text>
+        </View>
         <Text style={[
           styles.bracketTeamName,
           isHomeWinner && styles.bracketTeamNameWinner,
@@ -181,10 +186,16 @@ function BracketCard({ match, size = 'normal', champion = false }: { match: any;
         styles.bracketTeam,
         isAwayWinner && styles.bracketTeamWinner,
       ]}>
-        <Image source={{ uri: awayTeam.image }} style={[
+        <View style={[
           styles.bracketLogo,
-          isSmall && styles.bracketLogoSmall
-        ]} />
+          isSmall && styles.bracketLogoSmall,
+          { backgroundColor: awayTeam.color }
+        ]}>
+          <Text style={[
+            styles.bracketLogoText,
+            isSmall && styles.bracketLogoTextSmall
+          ]}>{awayTeam.shortName}</Text>
+        </View>
         <Text style={[
           styles.bracketTeamName,
           isAwayWinner && styles.bracketTeamNameWinner,
@@ -315,11 +326,21 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bracketLogoSmall: {
     width: 24,
     height: 24,
     borderRadius: 12,
+  },
+  bracketLogoText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: Colors.white,
+  },
+  bracketLogoTextSmall: {
+    fontSize: 8,
   },
   bracketTeamName: {
     flex: 1,
