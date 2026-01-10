@@ -16,6 +16,14 @@ import { useApp } from '@/contexts/AppContext';
 import { getPlayersByGame, Player } from '@/mocks/players';
 import { getTeamById } from '@/mocks/teams';
 
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return parts[0].substring(0, 2).toUpperCase();
+  }
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 interface StatCardProps {
   title: string;
   player: Player;
@@ -40,7 +48,9 @@ function StatCard({ title, player, stat, value, icon, statKey }: StatCardProps) 
         <Text style={styles.statCardTitle}>{title}</Text>
       </View>
       <View style={styles.playerInfo}>
-        <Image source={{ uri: player.image }} style={styles.playerImage} />
+        <View style={styles.playerInitialsContainer}>
+          <Text style={styles.playerInitials}>{getInitials(player.name)}</Text>
+        </View>
         <View style={styles.playerDetails}>
           <Text style={styles.playerName}>{player.username}</Text>
           {team && <Text style={styles.playerTeam}>{team.shortName}</Text>}
@@ -76,7 +86,9 @@ function MVPCard({ player, value, statKey }: { player: Player; value: number; st
       </View>
       
       <View style={styles.mvpContent}>
-        <Image source={{ uri: player.image }} style={styles.mvpPlayerImage} />
+        <View style={styles.mvpInitialsContainer}>
+          <Text style={styles.mvpInitials}>{getInitials(player.name)}</Text>
+        </View>
         
         <View style={styles.mvpPlayerInfo}>
           <Text style={styles.mvpPlayerName} numberOfLines={1}>{player.name}</Text>
@@ -213,6 +225,15 @@ export default function PlayerStatsScreen() {
       <GameSelector />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <Text style={styles.sectionTitle}>Most Valuable Player</Text>
+        <View style={styles.mvpSection}>
+          <MVPCard
+            player={mvpLeader.player}
+            value={mvpLeader.value}
+            statKey={mvpLeader.statKey}
+          />
+        </View>
+        
         <Text style={styles.sectionTitle}>Stat Leaders</Text>
         <View style={styles.grid}>
           {statLeaders.map((leader, index) => (
@@ -226,15 +247,6 @@ export default function PlayerStatsScreen() {
               statKey={leader.statKey}
             />
           ))}
-        </View>
-        
-        <Text style={styles.sectionTitle}>Most Valuable Player</Text>
-        <View style={styles.mvpSection}>
-          <MVPCard
-            player={mvpLeader.player}
-            value={mvpLeader.value}
-            statKey={mvpLeader.statKey}
-          />
         </View>
         
         <View style={{ height: 20 }} />
@@ -316,11 +328,18 @@ const styles = StyleSheet.create({
     gap: 10,
     marginBottom: 12,
   },
-  playerImage: {
+  playerInitialsContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerInitials: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: Colors.white,
   },
   playerDetails: {
     flex: 1,
@@ -465,13 +484,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
   },
-  mvpPlayerImage: {
+  mvpInitialsContainer: {
     width: 64,
     height: 64,
     borderRadius: 32,
     backgroundColor: Colors.darkGray,
     borderWidth: 2,
     borderColor: Colors.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mvpInitials: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: Colors.white,
   },
   mvpPlayerInfo: {
     flex: 1,

@@ -15,6 +15,14 @@ import { getPlayersByGame, Player } from '@/mocks/players';
 import { getTeamById } from '@/mocks/teams';
 import { GameType } from '@/constants/games';
 
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return parts[0].substring(0, 2).toUpperCase();
+  }
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 interface LeaderboardEntry {
   player: Player;
   value: number | string;
@@ -103,10 +111,9 @@ export default function LeaderboardScreen() {
                   </Text>
                 </View>
 
-                <Image
-                  source={{ uri: entry.player.image }}
-                  style={styles.playerImage}
-                />
+                <View style={styles.playerInitialsContainer}>
+                  <Text style={styles.playerInitials}>{getInitials(entry.player.name)}</Text>
+                </View>
 
                 <View style={styles.playerInfo}>
                   <Text style={styles.playerName} numberOfLines={1}>
@@ -204,12 +211,19 @@ const styles = StyleSheet.create({
   rankTextHighlight: {
     color: Colors.primary,
   },
-  playerImage: {
+  playerInitialsContainer: {
     width: 48,
     height: 48,
     borderRadius: 24,
     backgroundColor: Colors.darkGray,
     marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerInitials: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: Colors.white,
   },
   playerInfo: {
     flex: 1,
