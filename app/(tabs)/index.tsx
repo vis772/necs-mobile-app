@@ -32,7 +32,7 @@ const STORIES: Story[] = [
   { id: '1', title: 'Top Plays', thumbnail: '#FF4655', viewed: false, type: 'highlight' },
   { id: '2', title: 'Team Stats', thumbnail: '#00D9FF', viewed: false, type: 'stats' },
   { id: '3', title: 'Live Updates', thumbnail: '#FFC700', viewed: false, type: 'team' },
-  { id: '4', title: 'MVP Moments', thumbnail: '#BD3FE1', viewed: true, type: 'player' },
+  { id: '4', title: 'MVP Moments', thumbnail: '#BD3FE1', viewed: false, type: 'player' },
   { id: '5', title: 'Highlights', thumbnail: '#FF6B00', viewed: false, type: 'highlight' },
 ];
 
