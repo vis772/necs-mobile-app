@@ -17,7 +17,8 @@ import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { PLAYERS } from '@/mocks/players';
 
 function getFirstLetter(name: string): string {
-  return name.trim()[0].toUpperCase();
+  const trimmed = name?.trim();
+  return (trimmed && trimmed[0]) ? trimmed[0].toUpperCase() : '?';
 }
 
 export default function GamePreviewScreen() {
