@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -117,10 +117,9 @@ export default function LeaderboardScreen() {
                   </Text>
                   {team && (
                     <View style={styles.teamContainer}>
-                      <Image
-                        source={{ uri: team.image }}
-                        style={styles.teamImage}
-                      />
+                      <View style={[styles.teamImage, { backgroundColor: team.color }]}>
+                        <Text style={styles.teamImageText}>{team.shortName}</Text>
+                      </View>
                       <Text style={styles.teamName}>{team.name}</Text>
                     </View>
                   )}
@@ -240,6 +239,13 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 8,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamImageText: {
+    fontSize: 8,
+    fontWeight: '800',
+    color: Colors.white,
   },
   teamName: {
     fontSize: 12,

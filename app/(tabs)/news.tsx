@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+
 import { router } from 'expo-router';
 import GameSelector from '@/components/GameSelector';
 import Colors from '@/constants/colors';
@@ -91,7 +91,9 @@ function MVPCard({ player, value, statKey }: { player: Player; value: number; st
           <Text style={styles.mvpPlayerUsername}>@{player.username}</Text>
           {team && (
             <View style={styles.mvpTeamContainer}>
-              <Image source={{ uri: team.image }} style={styles.mvpTeamImage} />
+              <View style={[styles.mvpTeamImage, { backgroundColor: team.color }]}>
+                <Text style={styles.mvpTeamImageText}>{team.shortName}</Text>
+              </View>
               <Text style={styles.mvpTeamName}>{team.name}</Text>
             </View>
           )}
@@ -520,6 +522,13 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mvpTeamImageText: {
+    fontSize: 8,
+    fontWeight: '800',
+    color: Colors.white,
   },
   mvpTeamName: {
     fontSize: 12,

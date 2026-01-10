@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+
 import { router } from 'expo-router';
 import { Calendar } from 'lucide-react-native';
 
@@ -274,7 +274,9 @@ function MatchCard({ match }: { match: Match }) {
     >
       <View style={styles.matchContainer}>
         <View style={styles.teamSide}>
-          <Image source={{ uri: homeTeam.image }} style={styles.teamLogo} />
+          <View style={[styles.teamLogo, { backgroundColor: homeTeam.color }]}>
+            <Text style={styles.teamLogoText}>{homeTeam.shortName}</Text>
+          </View>
           <Text style={styles.teamName} numberOfLines={1}>{homeTeam.name}</Text>
           <Text style={styles.teamRecord}>
             {homeTeam.record.wins}-{homeTeam.record.losses}
@@ -315,7 +317,9 @@ function MatchCard({ match }: { match: Match }) {
         </View>
 
         <View style={styles.teamSide}>
-          <Image source={{ uri: awayTeam.image }} style={styles.teamLogo} />
+          <View style={[styles.teamLogo, { backgroundColor: awayTeam.color }]}>
+            <Text style={styles.teamLogoText}>{awayTeam.shortName}</Text>
+          </View>
           <Text style={styles.teamName} numberOfLines={1}>{awayTeam.name}</Text>
           <Text style={styles.teamRecord}>
             {awayTeam.record.wins}-{awayTeam.record.losses}
@@ -414,6 +418,13 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamLogoText: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: Colors.white,
   },
   teamName: {
     fontSize: 13,

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+
 import { useLocalSearchParams, router } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -73,7 +73,9 @@ export default function GameStatsScreen() {
       <View style={styles.matchSummary}>
         <View style={styles.matchInfo}>
           <View style={styles.teamSummary}>
-            <Image source={{ uri: homeTeam.image }} style={styles.summaryTeamImage} />
+            <View style={[styles.summaryTeamImage, { backgroundColor: homeTeam.color }]}>
+              <Text style={styles.summaryTeamText}>{homeTeam.shortName}</Text>
+            </View>
             <Text style={styles.summaryTeamName} numberOfLines={1}>{homeTeam.name}</Text>
           </View>
           
@@ -84,7 +86,9 @@ export default function GameStatsScreen() {
           </View>
 
           <View style={styles.teamSummary}>
-            <Image source={{ uri: awayTeam.image }} style={styles.summaryTeamImage} />
+            <View style={[styles.summaryTeamImage, { backgroundColor: awayTeam.color }]}>
+              <Text style={styles.summaryTeamText}>{awayTeam.shortName}</Text>
+            </View>
             <Text style={styles.summaryTeamName} numberOfLines={1}>{awayTeam.name}</Text>
           </View>
         </View>
@@ -103,7 +107,9 @@ export default function GameStatsScreen() {
           ]}
           onPress={() => setSelectedTeam('home')}
         >
-          <Image source={{ uri: homeTeam.image }} style={styles.toggleTeamImage} />
+          <View style={[styles.toggleTeamImage, { backgroundColor: homeTeam.color }]}>
+            <Text style={styles.toggleTeamText}>{homeTeam.shortName}</Text>
+          </View>
           <Text style={[
             styles.toggleText,
             selectedTeam === 'home' && styles.toggleTextActive,
@@ -120,7 +126,9 @@ export default function GameStatsScreen() {
           ]}
           onPress={() => setSelectedTeam('away')}
         >
-          <Image source={{ uri: awayTeam.image }} style={styles.toggleTeamImage} />
+          <View style={[styles.toggleTeamImage, { backgroundColor: awayTeam.color }]}>
+            <Text style={styles.toggleTeamText}>{awayTeam.shortName}</Text>
+          </View>
           <Text style={[
             styles.toggleText,
             selectedTeam === 'away' && styles.toggleTextActive,
@@ -133,7 +141,9 @@ export default function GameStatsScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.statsHeader}>
           <View style={styles.teamBanner}>
-            <Image source={{ uri: currentTeam.image }} style={styles.bannerTeamImage} />
+            <View style={[styles.bannerTeamImage, { backgroundColor: currentTeam.color }]}>
+              <Text style={styles.bannerTeamText}>{currentTeam.shortName}</Text>
+            </View>
             <View>
               <Text style={styles.bannerTeamName}>{currentTeam.name}</Text>
               <Text style={styles.bannerScore}>Final Score: {formatScore(currentScore)}</Text>
@@ -305,6 +315,13 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  summaryTeamText: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: Colors.white,
   },
   summaryTeamName: {
     fontSize: 12,
@@ -370,6 +387,13 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 14,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toggleTeamText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: Colors.white,
   },
   toggleText: {
     fontSize: 14,
@@ -398,6 +422,13 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 28,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bannerTeamText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: Colors.white,
   },
   bannerTeamName: {
     fontSize: 18,

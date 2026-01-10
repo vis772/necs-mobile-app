@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Image } from 'expo-image';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -72,7 +72,9 @@ export default function GamePreviewScreen() {
             
             <View style={styles.teamsMatchup}>
               <View style={styles.teamPreview}>
-                <Image source={{ uri: homeTeam.image }} style={styles.teamLogo} />
+                <View style={[styles.teamLogo, { backgroundColor: homeTeam.color }]}>
+                  <Text style={styles.teamLogoText}>{homeTeam.shortName}</Text>
+                </View>
                 <Text style={styles.teamName}>{homeTeam.name}</Text>
                 <Text style={styles.teamRecord}>{homeTeam.record.wins}-{homeTeam.record.losses}</Text>
               </View>
@@ -80,7 +82,9 @@ export default function GamePreviewScreen() {
               <Text style={styles.vsText}>VS</Text>
 
               <View style={styles.teamPreview}>
-                <Image source={{ uri: awayTeam.image }} style={styles.teamLogo} />
+                <View style={[styles.teamLogo, { backgroundColor: awayTeam.color }]}>
+                  <Text style={styles.teamLogoText}>{awayTeam.shortName}</Text>
+                </View>
                 <Text style={styles.teamName}>{awayTeam.name}</Text>
                 <Text style={styles.teamRecord}>{awayTeam.record.wins}-{awayTeam.record.losses}</Text>
               </View>
@@ -123,7 +127,9 @@ export default function GamePreviewScreen() {
 
           <View style={styles.teamDetailsSection}>
             <View style={styles.teamHeader}>
-              <Image source={{ uri: selectedTeam.image }} style={styles.selectedTeamLogo} />
+              <View style={[styles.selectedTeamLogo, { backgroundColor: selectedTeam.color }]}>
+                <Text style={styles.selectedTeamLogoText}>{selectedTeam.shortName}</Text>
+              </View>
               <View style={styles.teamHeaderInfo}>
                 <Text style={styles.selectedTeamName}>{selectedTeam.name}</Text>
                 <Text style={styles.selectedTeamRegion}>{selectedTeam.region}</Text>
@@ -292,6 +298,13 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     backgroundColor: Colors.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamLogoText: {
+    fontSize: 24,
+    fontWeight: '900',
+    color: Colors.white,
   },
   teamName: {
     fontSize: 13,
@@ -356,6 +369,13 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     backgroundColor: Colors.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedTeamLogoText: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: Colors.white,
   },
   teamHeaderInfo: {
     flex: 1,

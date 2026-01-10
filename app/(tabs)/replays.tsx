@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+
 import { useRouter } from 'expo-router';
 import { Play } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -123,7 +123,9 @@ export default function ReplaysScreen() {
 
                 <View style={styles.matchupContainer}>
                   <View style={styles.team}>
-                    <Image source={{ uri: homeTeam.image }} style={styles.teamLogo} />
+                    <View style={[styles.teamLogo, { backgroundColor: homeTeam.color }]}>
+                      <Text style={styles.teamLogoText}>{homeTeam.shortName}</Text>
+                    </View>
                     <Text style={styles.teamName} numberOfLines={1}>{homeTeam.name}</Text>
                     <Text style={styles.teamScore}>{formatScore(match.homeScore)}</Text>
                   </View>
@@ -133,7 +135,9 @@ export default function ReplaysScreen() {
                   </View>
 
                   <View style={styles.team}>
-                    <Image source={{ uri: awayTeam.image }} style={styles.teamLogo} />
+                    <View style={[styles.teamLogo, { backgroundColor: awayTeam.color }]}>
+                      <Text style={styles.teamLogoText}>{awayTeam.shortName}</Text>
+                    </View>
                     <Text style={styles.teamName} numberOfLines={1}>{awayTeam.name}</Text>
                     <Text style={styles.teamScore}>{formatScore(match.awayScore)}</Text>
                   </View>
@@ -276,6 +280,13 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: Colors.darkGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamLogoText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: Colors.white,
   },
   teamName: {
     fontSize: 13,

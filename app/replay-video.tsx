@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Image } from 'expo-image';
+
 import { 
   X, 
   Play, 
@@ -280,10 +280,6 @@ export default function ReplayVideoScreen() {
                   <Text style={styles.potmName}>{playerOfTheMatch.name}</Text>
                   <Text style={styles.potmUsername}>@{playerOfTheMatch.username}</Text>
                   <View style={styles.potmTeamInfo}>
-                    <Image
-                      source={{ uri: playerOfTheMatch.teamLogo }}
-                      style={styles.potmTeamLogo}
-                    />
                     <Text style={styles.potmTeamName}>{playerOfTheMatch.teamName}</Text>
                   </View>
                 </View>
@@ -304,7 +300,9 @@ export default function ReplayVideoScreen() {
 
               <View style={styles.matchScore}>
                 <View style={styles.teamInfoCompact}>
-                  <Image source={{ uri: homeTeam.image }} style={styles.teamLogoSmall} />
+                  <View style={[styles.teamLogoSmall, { backgroundColor: homeTeam.color }]}>
+                    <Text style={styles.teamLogoSmallText}>{homeTeam.shortName}</Text>
+                  </View>
                   <Text style={styles.teamNameSmall} numberOfLines={1}>{homeTeam.name}</Text>
                 </View>
 
@@ -315,7 +313,9 @@ export default function ReplayVideoScreen() {
                 </View>
 
                 <View style={styles.teamInfoCompact}>
-                  <Image source={{ uri: awayTeam.image }} style={styles.teamLogoSmall} />
+                  <View style={[styles.teamLogoSmall, { backgroundColor: awayTeam.color }]}>
+                    <Text style={styles.teamLogoSmallText}>{awayTeam.shortName}</Text>
+                  </View>
                   <Text style={styles.teamNameSmall} numberOfLines={1}>{awayTeam.name}</Text>
                 </View>
               </View>
@@ -334,7 +334,9 @@ export default function ReplayVideoScreen() {
                   ]}
                   onPress={() => setSelectedTeam('home')}
                 >
-                  <Image source={{ uri: homeTeam.image }} style={styles.toggleTeamLogo} />
+                  <View style={[styles.toggleTeamLogo, { backgroundColor: homeTeam.color }]}>
+                    <Text style={styles.toggleTeamLogoText}>{homeTeam.shortName}</Text>
+                  </View>
                   <Text
                     style={[
                       styles.toggleText,
@@ -353,7 +355,9 @@ export default function ReplayVideoScreen() {
                   ]}
                   onPress={() => setSelectedTeam('away')}
                 >
-                  <Image source={{ uri: awayTeam.image }} style={styles.toggleTeamLogo} />
+                  <View style={[styles.toggleTeamLogo, { backgroundColor: awayTeam.color }]}>
+                    <Text style={styles.toggleTeamLogoText}>{awayTeam.shortName}</Text>
+                  </View>
                   <Text
                     style={[
                       styles.toggleText,
@@ -610,6 +614,13 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: Colors.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamLogoSmallText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: Colors.white,
   },
   teamNameSmall: {
     fontSize: 11,
@@ -671,6 +682,13 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toggleTeamLogoText: {
+    fontSize: 8,
+    fontWeight: '800',
+    color: Colors.white,
   },
   toggleText: {
     fontSize: 13,
