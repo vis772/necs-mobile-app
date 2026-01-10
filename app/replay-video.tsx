@@ -69,12 +69,12 @@ export default function ReplayVideoScreen() {
 
   const gameType = getGameType();
 
-  const getPlayerOfTheMatch = (): (GamePlayerStats & { teamName: string; teamLogo: string }) | null => {
+  const getPlayerOfTheMatch = (): (GamePlayerStats & { teamName: string }) | null => {
     if (!match || !homeTeam || !awayTeam) return null;
 
     const allPlayers = [
-      ...homePlayerStats.map(p => ({ ...p, teamName: homeTeam.name, teamLogo: homeTeam.image })),
-      ...awayPlayerStats.map(p => ({ ...p, teamName: awayTeam.name, teamLogo: awayTeam.image })),
+      ...homePlayerStats.map(p => ({ ...p, teamName: homeTeam.name })),
+      ...awayPlayerStats.map(p => ({ ...p, teamName: awayTeam.name })),
     ];
 
     if (allPlayers.length === 0) return null;
