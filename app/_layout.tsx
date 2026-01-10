@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "@/contexts/AppContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -24,10 +24,27 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
     console.log('[RootLayout] Initializing app...');
-    SplashScreen.hideAsync();
+    const init = async () => {
+      try {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        console.log('[RootLayout] Ready to show app');
+        setIsReady(true);
+        await SplashScreen.hideAsync();
+        console.log('[RootLayout] Splash screen hidden');
+      } catch (error) {
+        console.error('[RootLayout] Initialization error:', error);
+        setIsReady(true);
+      }
+    };
+    
+    init();
   }, []);
+
+  console.log('[RootLayout] Rendering, isReady:', isReady);
 
   return (
     <ErrorBoundary>
