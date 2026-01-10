@@ -28,10 +28,26 @@ export default function HomeScreen() {
   const { selectedGame, setSelectedGame } = useApp();
   console.log('[HomeScreen] selectedGame:', selectedGame);
   
-  const liveMatches = getLiveMatches(selectedGame);
+  const liveMatches = React.useMemo(() => {
+    try {
+      return getLiveMatches(selectedGame);
+    } catch (error) {
+      console.error('[HomeScreen] Error getting live matches:', error);
+      return [];
+    }
+  }, [selectedGame]);
+  
   console.log('[HomeScreen] liveMatches count:', liveMatches.length);
   
-  const upcomingMatches = getMatchesByGame(selectedGame).filter(m => m.status === 'upcoming').slice(0, 5);
+  const upcomingMatches = React.useMemo(() => {
+    try {
+      return getMatchesByGame(selectedGame).filter(m => m.status === 'upcoming').slice(0, 5);
+    } catch (error) {
+      console.error('[HomeScreen] Error getting upcoming matches:', error);
+      return [];
+    }
+  }, [selectedGame]);
+  
   console.log('[HomeScreen] upcomingMatches count:', upcomingMatches.length);
 
   return (

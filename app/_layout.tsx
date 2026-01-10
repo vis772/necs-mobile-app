@@ -24,9 +24,28 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
+  const [isReady, setIsReady] = React.useState(false);
+
   useEffect(() => {
-    SplashScreen.hideAsync().catch(() => {});
+    async function prepare() {
+      try {
+        console.log('[RootLayout] Preparing app...');
+        await new Promise(resolve => setTimeout(resolve, 100));
+        console.log('[RootLayout] App ready');
+      } catch (e) {
+        console.warn('[RootLayout] Error preparing:', e);
+      } finally {
+        setIsReady(true);
+        SplashScreen.hideAsync().catch(console.warn);
+      }
+    }
+
+    prepare();
   }, []);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <ErrorBoundary>
