@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,37 @@ import Colors from '@/constants/colors';
 import { getMatchesByGame, getLiveMatches } from '@/mocks/matches';
 import { getTeamWithDynamicRecord } from '@/mocks/teamRecords';
 import { GAMES } from '@/constants/games';
-import { Play } from 'lucide-react-native';
+import { Play, X } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 const formatScore = (score: number): string => {
   return score > 9 ? '9' : score.toString();
 };
 
+interface Story {
+  id: string;
+  title: string;
+  thumbnail: string;
+  viewed: boolean;
+  type: 'highlight' | 'player' | 'team' | 'stats';
+}
+
+const STORIES: Story[] = [
+  { id: '1', title: 'Top Plays', thumbnail: '#FF4655', viewed: false, type: 'highlight' },
+  { id: '2', title: 'Team Stats', thumbnail: '#00D9FF', viewed: false, type: 'stats' },
+  { id: '3', title: 'Live Updates', thumbnail: '#FFC700', viewed: false, type: 'team' },
+  { id: '4', title: 'MVP Moments', thumbnail: '#BD3FE1', viewed: true, type: 'player' },
+  { id: '5', title: 'Highlights', thumbnail: '#FF6B00', viewed: false, type: 'highlight' },
+];
+
 export default function HomeScreen() {
   console.log('[HomeScreen] Rendering...');
   
   const { selectedGame, setSelectedGame } = useApp();
   console.log('[HomeScreen] selectedGame:', selectedGame);
+  
+  const [stories, setStories] = useState<Story[]>(STORIES);
+  const [activeStory, setActiveStory] = useState<Story | null>(null);
   
   const liveMatches = getLiveMatches(selectedGame);
   console.log('[HomeScreen] liveMatches count:', liveMatches.length);
@@ -72,6 +91,42 @@ export default function HomeScreen() {
         </View>
 
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          <View style={styles.storiesSection}>
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.storiesContainer}
+            >
+              {stories.map((story) => (
+                <TouchableOpacity
+                  key={story.id}
+                  style={styles.storyItem}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setActiveStory(story);
+                    setStories(prev => 
+                      prev.map(s => s.id === story.id ? { ...s, viewed: true } : s)
+                    );
+                  }}
+                >
+                  <LinearGradient
+                    colors={story.viewed ? ['#3A3A3C', '#3A3A3C'] : ['#FF4655', '#BD3FE1', '#00D9FF']}
+                    style={styles.storyGradientBorder}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                  >
+                    <View style={styles.storyInnerBorder}>
+                      <View style={[styles.storyAvatar, { backgroundColor: story.thumbnail }]}>
+                        <Text style={styles.storyAvatarText}>{story.title[0]}</Text>
+                      </View>
+                    </View>
+                  </LinearGradient>
+                  <Text style={styles.storyLabel} numberOfLines={1}>{story.title}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
           {liveMatches.length > 0 && (
             <View style={styles.liveSection}>
               {liveMatches.map((match) => (
@@ -93,6 +148,99 @@ export default function HomeScreen() {
 
           <View style={{ height: 40 }} />
         </ScrollView>
+
+        {activeStory && (
+          <StoryViewer 
+            story={activeStory} 
+            onClose={() => setActiveStory(null)}
+            onNext={() => {
+              const currentIndex = stories.findIndex(s => s.id === activeStory.id);
+              if (currentIndex < stories.length - 1) {
+                setActiveStory(stories[currentIndex + 1]);
+              } else {
+                setActiveStory(null);
+              }
+            }}
+            onPrevious={() => {
+              const currentIndex = stories.findIndex(s => s.id === activeStory.id);
+              if (currentIndex > 0) {
+                setActiveStory(stories[currentIndex - 1]);
+              }
+            }}
+          />
+        )}
+      </LinearGradient>
+    </View>
+  );
+}
+
+function StoryViewer({ story, onClose, onNext, onPrevious }: { 
+  story: Story; 
+  onClose: () => void;
+  onNext: () => void;
+  onPrevious: () => void;
+}) {
+  const [progress, setProgress] = useState<number>(0);
+
+  React.useEffect(() => {
+    setProgress(0);
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          onNext();
+          return 0;
+        }
+        return prev + 2;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [story.id, onNext]);
+
+  return (
+    <View style={styles.storyViewerContainer}>
+      <LinearGradient
+        colors={['#000000', '#1C1C1E']}
+        style={styles.storyViewerGradient}
+      >
+        <SafeAreaView edges={['top', 'bottom']} style={styles.storyViewerSafeArea}>
+          <View style={styles.storyProgressBar}>
+            <View style={[styles.storyProgressFill, { width: `${progress}%` }]} />
+          </View>
+
+          <View style={styles.storyHeader}>
+            <View style={styles.storyHeaderLeft}>
+              <View style={[styles.storyHeaderAvatar, { backgroundColor: story.thumbnail }]}>
+                <Text style={styles.storyHeaderAvatarText}>{story.title[0]}</Text>
+              </View>
+              <Text style={styles.storyHeaderTitle}>{story.title}</Text>
+            </View>
+            <TouchableOpacity onPress={onClose} style={styles.storyCloseButton}>
+              <X size={24} color={Colors.white} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.storyContent}>
+            <View style={[styles.storyContentPreview, { backgroundColor: story.thumbnail }]}>
+              <Text style={styles.storyContentText}>🔥</Text>
+              <Text style={styles.storyContentTitle}>{story.title}</Text>
+              <Text style={styles.storyContentSubtitle}>Tap sides to navigate</Text>
+            </View>
+          </View>
+
+          <View style={styles.storyNavigationArea}>
+            <TouchableOpacity 
+              style={styles.storyNavLeft}
+              onPress={onPrevious}
+              activeOpacity={1}
+            />
+            <TouchableOpacity 
+              style={styles.storyNavRight}
+              onPress={onNext}
+              activeOpacity={1}
+            />
+          </View>
+        </SafeAreaView>
       </LinearGradient>
     </View>
   );
@@ -508,5 +656,151 @@ const styles = StyleSheet.create({
     color: Colors.white,
     minWidth: 24,
     textAlign: 'right' as const,
+  },
+
+  storiesSection: {
+    paddingTop: 16,
+    paddingBottom: 4,
+  },
+  storiesContainer: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  storyItem: {
+    alignItems: 'center',
+    gap: 8,
+  },
+  storyGradientBorder: {
+    width: 74,
+    height: 74,
+    borderRadius: 37,
+    padding: 3,
+  },
+  storyInnerBorder: {
+    flex: 1,
+    borderRadius: 35,
+    backgroundColor: Colors.primary,
+    padding: 3,
+  },
+  storyAvatar: {
+    flex: 1,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  storyAvatarText: {
+    fontSize: 24,
+    fontWeight: '900',
+    color: Colors.white,
+  },
+  storyLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: Colors.white,
+    maxWidth: 74,
+    textAlign: 'center' as const,
+  },
+
+  storyViewerContainer: {
+    position: 'absolute' as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+  },
+  storyViewerGradient: {
+    flex: 1,
+  },
+  storyViewerSafeArea: {
+    flex: 1,
+  },
+  storyProgressBar: {
+    height: 3,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    marginHorizontal: 8,
+    marginTop: 8,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  storyProgressFill: {
+    height: '100%',
+    backgroundColor: Colors.white,
+    borderRadius: 2,
+  },
+  storyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  storyHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  storyHeaderAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  storyHeaderAvatarText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: Colors.white,
+  },
+  storyHeaderTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: Colors.white,
+  },
+  storyCloseButton: {
+    padding: 4,
+  },
+  storyContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  storyContentPreview: {
+    width: '100%',
+    aspectRatio: 9 / 16,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxHeight: 600,
+  },
+  storyContentText: {
+    fontSize: 64,
+    marginBottom: 20,
+  },
+  storyContentTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: Colors.white,
+    marginBottom: 8,
+  },
+  storyContentSubtitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.7)',
+  },
+  storyNavigationArea: {
+    position: 'absolute' as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+  },
+  storyNavLeft: {
+    flex: 1,
+  },
+  storyNavRight: {
+    flex: 1,
   },
 });
