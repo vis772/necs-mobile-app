@@ -16,7 +16,8 @@ import { MATCHES } from '@/mocks/matches';
 import { getPlayersByTeamAndMatch, GamePlayerStats } from '@/mocks/matchPlayerStats';
 
 function getFirstLetter(name: string): string {
-  return name.trim()[0].toUpperCase();
+  const trimmed = name?.trim();
+  return (trimmed && trimmed[0]) ? trimmed[0].toUpperCase() : '?';
 }
 
 const formatScore = (score: number): string => {

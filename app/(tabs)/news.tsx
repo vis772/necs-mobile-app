@@ -17,7 +17,8 @@ import { getPlayersByGame, Player } from '@/mocks/players';
 import { getTeamById } from '@/mocks/teams';
 
 function getFirstLetter(name: string): string {
-  return name.trim()[0].toUpperCase();
+  const trimmed = name?.trim();
+  return (trimmed && trimmed[0]) ? trimmed[0].toUpperCase() : '?';
 }
 
 interface StatCardProps {
