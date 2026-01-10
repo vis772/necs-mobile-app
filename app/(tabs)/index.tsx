@@ -116,7 +116,7 @@ export default function HomeScreen() {
                     end={{ x: 1, y: 1 }}
                   >
                     <View style={styles.storyInnerBorder}>
-                      <View style={[styles.storyAvatar, { backgroundColor: story.thumbnail }]}>
+                      <View style={styles.storyAvatar}>
                         <Text style={styles.storyAvatarText}>{story.title[0]}</Text>
                       </View>
                     </View>
@@ -671,33 +671,34 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   storyGradientBorder: {
-    width: 74,
-    height: 74,
-    borderRadius: 37,
-    padding: 3,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    padding: 2.5,
   },
   storyInnerBorder: {
     flex: 1,
-    borderRadius: 35,
+    borderRadius: 25.5,
     backgroundColor: Colors.primary,
-    padding: 3,
+    padding: 2.5,
   },
   storyAvatar: {
     flex: 1,
-    borderRadius: 32,
+    borderRadius: 23,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#2C2C2E',
   },
   storyAvatarText: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '900',
-    color: Colors.white,
+    color: '#8E8E93',
   },
   storyLabel: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '600',
     color: Colors.white,
-    maxWidth: 74,
+    maxWidth: 56,
     textAlign: 'center' as const,
   },
 
