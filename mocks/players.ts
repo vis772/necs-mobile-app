@@ -54,7 +54,7 @@ const createPlayers = (): Player[] => [
     username: 'Vex',
     teamId: 'val-1',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.92,
@@ -75,7 +75,7 @@ const createPlayers = (): Player[] => [
     username: 'Kairo',
     teamId: 'val-1',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.45,
@@ -96,7 +96,7 @@ const createPlayers = (): Player[] => [
     username: 'Rogue',
     teamId: 'val-1',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.58,
@@ -117,7 +117,7 @@ const createPlayers = (): Player[] => [
     username: 'Storm',
     teamId: 'val-1',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.38,
@@ -138,7 +138,7 @@ const createPlayers = (): Player[] => [
     username: 'Ash',
     teamId: 'val-1',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.62,
@@ -159,7 +159,7 @@ const createPlayers = (): Player[] => [
     username: 'Reaper',
     teamId: 'val-2',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.88,
@@ -180,7 +180,7 @@ const createPlayers = (): Player[] => [
     username: 'Orion',
     teamId: 'val-2',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.42,
@@ -201,7 +201,7 @@ const createPlayers = (): Player[] => [
     username: 'Volt',
     teamId: 'val-2',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.54,
@@ -222,7 +222,7 @@ const createPlayers = (): Player[] => [
     username: 'Viper',
     teamId: 'val-2',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.35,
@@ -243,7 +243,7 @@ const createPlayers = (): Player[] => [
     username: 'Ace',
     teamId: 'val-2',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.65,
@@ -264,7 +264,7 @@ const createPlayers = (): Player[] => [
     username: 'Echo',
     teamId: 'val-3',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.78,
@@ -285,7 +285,7 @@ const createPlayers = (): Player[] => [
     username: 'Forge',
     teamId: 'val-3',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.48,
@@ -306,7 +306,7 @@ const createPlayers = (): Player[] => [
     username: 'Sova',
     teamId: 'val-3',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1520409364224-63400afe26e5?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.52,
@@ -327,7 +327,7 @@ const createPlayers = (): Player[] => [
     username: 'Axel',
     teamId: 'val-3',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.32,
@@ -348,7 +348,7 @@ const createPlayers = (): Player[] => [
     username: 'Ghost',
     teamId: 'val-3',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.59,
@@ -369,7 +369,7 @@ const createPlayers = (): Player[] => [
     username: 'Strike',
     teamId: 'val-4',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.72,
@@ -390,7 +390,7 @@ const createPlayers = (): Player[] => [
     username: 'Wall',
     teamId: 'val-4',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.46,
@@ -411,7 +411,7 @@ const createPlayers = (): Player[] => [
     username: 'Arrow',
     teamId: 'val-4',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.55,
@@ -432,7 +432,7 @@ const createPlayers = (): Player[] => [
     username: 'Mist',
     teamId: 'val-4',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.34,
@@ -453,7 +453,7 @@ const createPlayers = (): Player[] => [
     username: 'Fade',
     teamId: 'val-4',
     game: 'valorant',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       valorant: {
         kd: 1.61,
@@ -475,7 +475,7 @@ const createPlayers = (): Player[] => [
     username: 'Blaze',
     teamId: 'smash-1',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 82,
@@ -496,7 +496,7 @@ const createPlayers = (): Player[] => [
     username: 'Frost',
     teamId: 'smash-1',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 80,
@@ -517,7 +517,7 @@ const createPlayers = (): Player[] => [
     username: 'Sentinel',
     teamId: 'smash-2',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 74,
@@ -538,7 +538,7 @@ const createPlayers = (): Player[] => [
     username: 'Cheetah',
     teamId: 'smash-2',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 70,
@@ -559,7 +559,7 @@ const createPlayers = (): Player[] => [
     username: 'Meteor',
     teamId: 'smash-3',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 68,
@@ -580,7 +580,7 @@ const createPlayers = (): Player[] => [
     username: 'Ledge',
     teamId: 'smash-3',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 66,
@@ -601,7 +601,7 @@ const createPlayers = (): Player[] => [
     username: 'Stock',
     teamId: 'smash-4',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 62,
@@ -622,7 +622,7 @@ const createPlayers = (): Player[] => [
     username: 'Shield',
     teamId: 'smash-4',
     game: 'smash',
-    image: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       smash: {
         wins: 60,
@@ -643,7 +643,7 @@ const createPlayers = (): Player[] => [
     username: 'Turbo',
     teamId: 'rl-1',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 168,
@@ -665,7 +665,7 @@ const createPlayers = (): Player[] => [
     username: 'Boost',
     teamId: 'rl-1',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 124,
@@ -687,7 +687,7 @@ const createPlayers = (): Player[] => [
     username: 'Wall',
     teamId: 'rl-1',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 82,
@@ -709,7 +709,7 @@ const createPlayers = (): Player[] => [
     username: 'Flip',
     teamId: 'rl-2',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 154,
@@ -731,7 +731,7 @@ const createPlayers = (): Player[] => [
     username: 'Reset',
     teamId: 'rl-2',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 118,
@@ -753,7 +753,7 @@ const createPlayers = (): Player[] => [
     username: 'Save',
     teamId: 'rl-2',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1520409364224-63400afe26e5?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 78,
@@ -775,7 +775,7 @@ const createPlayers = (): Player[] => [
     username: 'Aerial',
     teamId: 'rl-3',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 148,
@@ -797,7 +797,7 @@ const createPlayers = (): Player[] => [
     username: 'Demo',
     teamId: 'rl-3',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 112,
@@ -819,7 +819,7 @@ const createPlayers = (): Player[] => [
     username: 'Block',
     teamId: 'rl-3',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 74,
@@ -841,7 +841,7 @@ const createPlayers = (): Player[] => [
     username: 'Flick',
     teamId: 'rl-4',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 136,
@@ -863,7 +863,7 @@ const createPlayers = (): Player[] => [
     username: 'Pass',
     teamId: 'rl-4',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 106,
@@ -885,7 +885,7 @@ const createPlayers = (): Player[] => [
     username: 'Anchor',
     teamId: 'rl-4',
     game: 'rocketleague',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+    image: '',
     stats: {
       rocketleague: {
         goals: 70,
