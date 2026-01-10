@@ -26,9 +26,19 @@ function RootLayoutNav() {
 export default function RootLayout() {
   useEffect(() => {
     console.log('[RootLayout] Hiding splash screen...');
+    
+    const hideTimeout = setTimeout(() => {
+      console.log('[RootLayout] Force hiding splash after timeout');
+      SplashScreen.hideAsync().catch((e) => {
+        console.warn('[RootLayout] Error hiding splash:', e);
+      });
+    }, 100);
+
     SplashScreen.hideAsync().catch((e) => {
       console.warn('[RootLayout] Error hiding splash:', e);
     });
+
+    return () => clearTimeout(hideTimeout);
   }, []);
 
   return (
