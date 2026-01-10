@@ -115,9 +115,22 @@ function MVPCard({ player, value, statKey }: { player: Player; value: number; st
 
 export default function PlayerStatsScreen() {
   const { selectedGame } = useApp();
-  const players = useMemo(() => getPlayersByGame(selectedGame), [selectedGame]);
+  const players = useMemo(() => {
+    try {
+      const gamePlayers = getPlayersByGame(selectedGame);
+      console.log('[PlayerStatsScreen] Loaded players:', gamePlayers.length);
+      return gamePlayers;
+    } catch (error) {
+      console.error('[PlayerStatsScreen] Error loading players:', error);
+      return [];
+    }
+  }, [selectedGame]);
 
   const statLeaders = useMemo(() => {
+    if (players.length === 0) {
+      console.warn('[PlayerStatsScreen] No players available');
+      return [];
+    }
     if (selectedGame === 'valorant') {
       const sortedByKD = [...players].sort((a, b) => 
         (b.stats.valorant?.kd || 0) - (a.stats.valorant?.kd || 0)
@@ -131,6 +144,10 @@ export default function PlayerStatsScreen() {
       const sortedByKills = [...players].sort((a, b) => 
         (b.stats.valorant?.kills || 0) - (a.stats.valorant?.kills || 0)
       );
+
+      if (!sortedByKD[0] || !sortedByACS[0] || !sortedByHS[0] || !sortedByKills[0]) {
+        return [];
+      }
 
       return [
         { title: 'K/D Leader', player: sortedByKD[0], stat: 'K/D', value: sortedByKD[0].stats.valorant?.kd || 0, icon: <Target size={16} color={Colors.accent} />, statKey: 'kd' },
@@ -152,6 +169,10 @@ export default function PlayerStatsScreen() {
         (b.stats.smash?.stocksTaken || 0) - (a.stats.smash?.stocksLost || 0)
       );
 
+      if (!sortedByWins[0] || !sortedByWinPercent[0] || !sortedByDamage[0] || !sortedByStocks[0]) {
+        return [];
+      }
+
       return [
         { title: 'Most Wins', player: sortedByWins[0], stat: 'Wins', value: sortedByWins[0].stats.smash?.wins || 0, icon: <Trophy size={16} color={Colors.accent} />, statKey: 'wins' },
         { title: 'Set Win %', player: sortedByWinPercent[0], stat: 'Win %', value: `${sortedByWinPercent[0].stats.smash?.setWinPercent || 0}%`, icon: <TrendingUp size={16} color={Colors.accent} />, statKey: 'setWinPercent' },
@@ -172,6 +193,10 @@ export default function PlayerStatsScreen() {
         (b.stats.rocketleague?.avgPointsPerMatch || 0) - (a.stats.rocketleague?.avgPointsPerMatch || 0)
       );
 
+      if (!sortedByGoals[0] || !sortedByAssists[0] || !sortedBySaves[0] || !sortedByPoints[0]) {
+        return [];
+      }
+
       return [
         { title: 'Goals Leader', player: sortedByGoals[0], stat: 'Goals', value: sortedByGoals[0].stats.rocketleague?.goals || 0, icon: <Target size={16} color={Colors.accent} />, statKey: 'goals' },
         { title: 'Assists Leader', player: sortedByAssists[0], stat: 'Assists', value: sortedByAssists[0].stats.rocketleague?.assists || 0, icon: <TrendingUp size={16} color={Colors.accent} />, statKey: 'assists' },
@@ -182,10 +207,15 @@ export default function PlayerStatsScreen() {
   }, [players, selectedGame]);
 
   const mvpLeader = useMemo(() => {
+    if (players.length === 0) {
+      return null;
+    }
+
     if (selectedGame === 'valorant') {
       const sortedByMVPs = [...players].sort((a, b) => 
         (b.stats.valorant?.mvps || 0) - (a.stats.valorant?.mvps || 0)
       );
+      if (!sortedByMVPs[0]) return null;
       return {
         player: sortedByMVPs[0],
         value: sortedByMVPs[0].stats.valorant?.mvps || 0,
@@ -195,6 +225,7 @@ export default function PlayerStatsScreen() {
       const sortedByPlacements = [...players].sort((a, b) => 
         (a.stats.smash?.tournamentPlacements || 999) - (b.stats.smash?.tournamentPlacements || 999)
       );
+      if (!sortedByPlacements[0]) return null;
       return {
         player: sortedByPlacements[0],
         value: sortedByPlacements[0].stats.smash?.tournamentPlacements || 0,
@@ -204,6 +235,7 @@ export default function PlayerStatsScreen() {
       const sortedByMVPs = [...players].sort((a, b) => 
         (b.stats.rocketleague?.mvps || 0) - (a.stats.rocketleague?.mvps || 0)
       );
+      if (!sortedByMVPs[0]) return null;
       return {
         player: sortedByMVPs[0],
         value: sortedByMVPs[0].stats.rocketleague?.mvps || 0,
@@ -224,29 +256,43 @@ export default function PlayerStatsScreen() {
       <GameSelector />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.sectionTitle}>Most Valuable Player</Text>
-        <View style={styles.mvpSection}>
-          <MVPCard
-            player={mvpLeader.player}
-            value={mvpLeader.value}
-            statKey={mvpLeader.statKey}
-          />
-        </View>
+        {mvpLeader && (
+          <>
+            <Text style={styles.sectionTitle}>Most Valuable Player</Text>
+            <View style={styles.mvpSection}>
+              <MVPCard
+                player={mvpLeader.player}
+                value={mvpLeader.value}
+                statKey={mvpLeader.statKey}
+              />
+            </View>
+          </>
+        )}
         
-        <Text style={styles.sectionTitle}>Stat Leaders</Text>
-        <View style={styles.grid}>
-          {statLeaders.map((leader, index) => (
-            <StatCard
-              key={index}
-              title={leader.title}
-              player={leader.player}
-              stat={leader.stat}
-              value={leader.value}
-              icon={leader.icon}
-              statKey={leader.statKey}
-            />
-          ))}
-        </View>
+        {statLeaders.length > 0 && (
+          <>
+            <Text style={styles.sectionTitle}>Stat Leaders</Text>
+            <View style={styles.grid}>
+              {statLeaders.map((leader, index) => (
+                <StatCard
+                  key={index}
+                  title={leader.title}
+                  player={leader.player}
+                  stat={leader.stat}
+                  value={leader.value}
+                  icon={leader.icon}
+                  statKey={leader.statKey}
+                />
+              ))}
+            </View>
+          </>
+        )}
+        
+        {players.length === 0 && (
+          <View style={{ padding: 20, alignItems: 'center' }}>
+            <Text style={{ color: Colors.gray, fontSize: 14 }}>No players found</Text>
+          </View>
+        )}
         
         <View style={{ height: 20 }} />
       </ScrollView>
