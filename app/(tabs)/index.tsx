@@ -90,6 +90,20 @@ export default function HomeScreen() {
         </View>
 
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          <View style={styles.storiesSection}>
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.storiesContainer}
+            >
+              <StoryCircle label="Live Stats" gradient />
+              <StoryCircle label="Highlights" gradient />
+              <StoryCircle label="Standings" gradient />
+              <StoryCircle label="Leaders" gradient />
+              <StoryCircle label="MVP" gradient />
+            </ScrollView>
+          </View>
+
           {liveMatches.length > 0 && (
             <View style={styles.liveSection}>
               {liveMatches.map((match) => (
@@ -112,6 +126,32 @@ export default function HomeScreen() {
           <View style={{ height: 40 }} />
         </ScrollView>
       </LinearGradient>
+    </View>
+  );
+}
+
+function StoryCircle({ label, gradient }: { label: string; gradient?: boolean }) {
+  return (
+    <View style={styles.storyItem}>
+      <View style={styles.storyCircleContainer}>
+        {gradient ? (
+          <LinearGradient
+            colors={['#FF6B6B', '#4ECDC4', '#45B7D1']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.storyGradientBorder}
+          >
+            <View style={styles.storyInnerCircle}>
+              <View style={styles.storyContent} />
+            </View>
+          </LinearGradient>
+        ) : (
+          <View style={styles.storyCircle}>
+            <View style={styles.storyContent} />
+          </View>
+        )}
+      </View>
+      <Text style={styles.storyLabel} numberOfLines={1}>{label}</Text>
     </View>
   );
 }
@@ -526,5 +566,58 @@ const styles = StyleSheet.create({
     color: Colors.white,
     minWidth: 24,
     textAlign: 'right' as const,
+  },
+  storiesSection: {
+    paddingVertical: 16,
+  },
+  storiesContainer: {
+    paddingHorizontal: 16,
+    gap: 16,
+  },
+  storyItem: {
+    alignItems: 'center',
+    gap: 6,
+  },
+  storyCircleContainer: {
+    width: 64,
+    height: 64,
+  },
+  storyGradientBorder: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  storyInnerCircle: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: Colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  storyCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  storyContent: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  storyLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: Colors.white,
+    maxWidth: 64,
+    textAlign: 'center' as const,
   },
 });
