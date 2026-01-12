@@ -3,10 +3,13 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Platform } from "react-native";
 import { AppProvider } from "@/contexts/AppContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
-SplashScreen.preventAutoHideAsync();
+if (Platform.OS !== 'web') {
+  SplashScreen.preventAutoHideAsync();
+}
 
 const queryClient = new QueryClient();
 
@@ -30,11 +33,16 @@ export default function RootLayout() {
     console.log('[RootLayout] Initializing app...');
     const init = async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        console.log('[RootLayout] Ready to show app');
-        setIsReady(true);
-        await SplashScreen.hideAsync();
-        console.log('[RootLayout] Splash screen hidden');
+        if (Platform.OS === 'web') {
+          console.log('[RootLayout] Web platform detected, skipping splash screen');
+          setIsReady(true);
+        } else {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          console.log('[RootLayout] Ready to show app');
+          setIsReady(true);
+          await SplashScreen.hideAsync();
+          console.log('[RootLayout] Splash screen hidden');
+        }
       } catch (error) {
         console.error('[RootLayout] Initialization error:', error);
         setIsReady(true);
