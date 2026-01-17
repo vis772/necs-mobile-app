@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Home, TrendingUp, BarChart3, Trophy, MessageCircle, Play } from 'lucide-react-native';
+import { Home, TrendingUp, BarChart3, Trophy, MessageCircle, Play, ShoppingBag } from 'lucide-react-native';
 import React from 'react';
 import Colors from '@/constants/colors';
 
@@ -64,6 +64,13 @@ export default function TabLayout() {
         options={{
           title: 'Chat',
           tabBarIcon: ({ color, size }) => <MessageCircle size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="store"
+        options={{
+          title: 'Store',
+          tabBarIcon: ({ color, size }) => <ShoppingBag size={size} color={color} />,
         }}
       />
     </Tabs>
