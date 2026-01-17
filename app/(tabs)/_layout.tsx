@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Home, TrendingUp, BarChart3, Trophy, MessageCircle, Play, ShoppingBag } from 'lucide-react-native';
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import Colors from '@/constants/colors';
 
 export default function TabLayout() {
@@ -49,7 +50,12 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <View style={styles.homeIconContainer}>
+              <View style={[styles.homeGlow, focused && styles.homeGlowActive]} />
+              <Home size={size} color={color} style={{ zIndex: 1 }} />
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
@@ -76,3 +82,29 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  homeIconContainer: {
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  homeGlow: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.accent,
+    opacity: 0.15,
+    shadowColor: Colors.accent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  homeGlowActive: {
+    opacity: 0.2,
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+  },
+});
